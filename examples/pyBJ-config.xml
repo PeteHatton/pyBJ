@@ -1,0 +1,39 @@
+<BJ>
+
+    <playerStratPath> ./player-strategy_default.xlsx </playerStratPath>
+    <dealerStratPath> ./dealer-strategy_default.xlsx </dealerStratPath>
+
+    <!-- Base/Starting Bet for Blackjack rounds - this will be modified based on the betting strategy -->
+    <baseBet> 1 </baseBet>
+
+    <!-- Number of BJ rounds to simulate -->
+    <totalRounds> 10 </totalRounds>
+
+    <!-- How deep to put the cut card. 0 = shuffle after every hand -->
+    <deckPenetration> 0 </deckPenetration>
+
+    <!-- Betting Strategy. Currently implemented 'Flat' betting and 'Martingale' betting -->
+    <bettingStrategy> Flat </bettingStrategy>
+
+    <!-- Max bet on the table, -1 = no max (infinite) -->
+    <tableMaxBet> -1 </tableMaxBet>
+
+    <!-- A BJ pays x:y -->
+    <blackjackPaysRatio> 3:2 </blackjackPaysRatio>
+
+    <!-- verbose output for each hand for debugging -->
+    <verbose> 0 </verbose>
+
+    <!-- Amount of hands that we can split to -->
+    <maxHands> 4 </maxHands>
+
+    <!-- number of decks in the shoe -->
+    <nDecks> 1 </nDecks>
+
+    <!-- max bet on the table -->
+    <tableMaxBet> 1000 </tableMaxBet>
+
+    <!-- Does the dealer draw their second card before or after players act -->
+    <dealerDraws> Before </dealerDraws>
+
+</BJ>
