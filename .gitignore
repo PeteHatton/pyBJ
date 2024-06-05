@@ -1,3 +1,5 @@
-pyBJ/__pycache__
+pyBJ/__pycache__/*
+.DS_Store
 examples/Analysis.ipynb
 examples/results.csv
+testing
