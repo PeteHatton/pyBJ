@@ -60,6 +60,7 @@ def log(caller: str, message: str, level: int, indent: int = 0) -> None:
     Returns:
         None
     """
+    
     if level <= Globals.verbose:
         # Only print if less than the level set in Input module
         now = datetime.datetime.now().strftime("%d/%m/%y, %H:%M:%S")

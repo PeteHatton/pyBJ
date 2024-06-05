@@ -1,7 +1,6 @@
-import numpy as np
-import xml.etree.ElementTree as ET
-
 import Globals
+
+import xml.etree.ElementTree as ET
 
 class InputParams:
     def __init__(self):
@@ -14,7 +13,6 @@ class InputParams:
         self.totalRounds = 0
         self.deckPenetration = 0
         self.bettingStrategy = None
-        self.hitSoft17 = 0
         self.tableMaxBet = 0
         self.blackjackPaysRatio = ''
         self.blackjackPays = ''
@@ -63,7 +61,7 @@ def readGlobals(inputFile="pyBJ-config.xml", inputParams=None):
         pass
     else:
         if not isinstance(inputParams, InputParams):
-            inputParams = getParams(inputFile=inputFile)
+            inputParams = getParams(inputFile = inputFile)
         
         # assume this method is called while in original working directory
         Globals.verbose = inputParams.verbose

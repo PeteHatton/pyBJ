@@ -22,14 +22,12 @@ class Martingale(BettingStrategy):
     def __init__(self, params):
         super().__init__(params)
 
+        self.maxBet = self.params.tableMaxBet
         if self.params.tableMaxBet == -1:
             self.maxBet = np.inf
-        else:
-            self.maxBet = self.params.tableMaxBet
 
     def run(self, betSize = None, runningResults = None):
         
-
         if runningResults[-1] < runningResults[-2]:
             betSize = np.min([self.maxBet, betSize * 2])
         else:
@@ -42,10 +40,9 @@ class ReverseMartingale(BettingStrategy):
     def __init__(self, params):
         super().__init__(params)
 
+        self.maxBet = self.params.tableMaxBet
         if self.params.tableMaxBet == -1:
             self.maxBet = np.inf
-        else:
-            self.maxBet = self.params.tableMaxBet
 
     def run(self, betSize = None, runningResults = None):
         

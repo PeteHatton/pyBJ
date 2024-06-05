@@ -3,14 +3,10 @@ from Cards import *
 from Decision import *
 from Strategy import *
 from Bet import *
-from Input import getParams
 from Utilities import *
-
 
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
 
 class BlackJack:
 
@@ -86,9 +82,11 @@ class BlackJack:
                     log(__name__,'Push', 1, 1)
                     self.player.bankroll += hand.bet
                     hand.resolved = 1
+
                 elif self.dealer.hand[0].value > hand.value:
                     log(__name__,'Dealer Win', 1, 1)
                     hand.resolved = 1
+
                 elif self.dealer.hand[0].value < hand.value:
                     log(__name__,'Player Win', 1, 1)
                     self.player.bankroll += 2 * hand.bet
@@ -101,6 +99,7 @@ class BlackJack:
     def muck(self):
 
         cutCardDepth = self.params.deckPenetration # How deep is the cut card in the shoe?
+        
         # if we've gone past cut card then shuffle
         if len(self.shoe) < self.shoe.nDecks * 52 * (1 - cutCardDepth):
             self.shoe.shuffle()
@@ -110,15 +109,6 @@ class BlackJack:
 
         self.player.control = 1
         self.dealer.control = 1
-
-        self.dealer.bj = 0
-        self.player.bj = 0
-
-        self.player.bust = 0
-        self.dealer.bust = 0
-
-        self.player.split = 0
-        self.dealer.split = 0
 
     def playerPlay(self, person : Player):
 
@@ -178,6 +168,14 @@ class BlackJack:
 
         for hand in person.hand: log(__name__, hand.cards, 1, 1)
 
+    def checkBJ(self, hand):
+        hand.evaluate()
+        if hand.value == 21:
+            self.dealer.control = 0
+            self.player.control = 0
+            hand.bj = 1
+
+
     def run(self, betSize = 1, forcedDealerHand = None, forcedPlayerHand = None):
         
         # deal cards to player and dealer
@@ -190,21 +188,16 @@ class BlackJack:
         self.player.hand[0].placeBet(self.player,betSize)
 
         # check for BJ for dealer and player. Resolve at the end
-        # Currently set to peak at A and all 10 values
-        self.dealer.hand[0].evaluate()
-        if self.dealer.hand[0].value == 21:
-            self.dealer.control = 0
-            self.player.control = 0
-            self.dealer.hand[0].bj = 1
+        # Currently set to always peak
+        self.checkBJ(self.dealer.hand[0])
         
         # players turn
         log(__name__, 'Player:', 1, 1)
-        self.player.hand[0].evaluate()
-        if self.player.hand[0].value == 21:
-            self.player.control = 0
-            self.dealer.control = 0
-            self.player.hand[0].bj = 1
+
+        # check for player bj
+        self.checkBJ(self.player.hand[0])
         
+        # player plays their hand...
         self.playerPlay(self.player)
 
         # if the player has busted their hands then no need for the dealer to play
@@ -216,12 +209,10 @@ class BlackJack:
         if self.params.dealerDraws == 'After': 
             self.dealer.hand[0].cards.append(self.shoe.draw())
 
-        self.dealer.hand[0].evaluate()
-        if self.dealer.hand[0].value == 21:
-            self.dealer.control = 0
-            self.player.control = 0
-            self.dealer.hand[0].bj = 1
+        # check for dealer bj
+        self.checkBJ(self.dealer.hand[0])
 
+        # dealer plays their hand...
         self.dealerPlay(self.dealer)
 
         # resolve the action

@@ -65,8 +65,9 @@ class Shoe(Card):
     def draw(self):
 
         # HACK: This allows the drawing of a card that is already in play... NOT GOOD.
-        # if len(self.deckSymbols) == 0:
-        #     self.shuffle()
+        if len(self.deckSymbols) == 0:
+            self.shuffle()
+            # should loop over hands in play and remove cards in play from deckSymbols.
 
         '''
         # This way of doing it will draw a card from a random point in a ordered deck
