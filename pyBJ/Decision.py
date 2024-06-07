@@ -10,7 +10,7 @@ class Action:
         self.name = ''
 
     def announce(self):
-        log(__name__, self.name, 1, 1)
+        log(__name__, self.name, 1, 2)
 
 class Hit(Action):
 

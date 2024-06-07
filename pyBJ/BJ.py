@@ -117,8 +117,14 @@ class BlackJack:
 
             # take the first hand in the list as the active one
             activeHand = uncompletedHands[0]
-            
-            log(__name__, activeHand.cards, 1, 1)
+            activeHand.evaluate()
+
+            logCards = ''
+            for card in activeHand.cards:
+                logCards += str(card) + ', '
+            logCards += f'= {activeHand.value}'
+
+            log(__name__, logCards, 1, 2)
             
             # evaluate the persons strategy
             if len(person.hand) >= self.params.maxHands: canSplit = 0
@@ -140,8 +146,14 @@ class BlackJack:
                                 for hand in person.hand 
                                 if hand.completed == 0 
                                 ]
-
-        for hand in person.hand: log(__name__, hand.cards, 1, 1)
+        log(__name__, 'Player Result(s):', 1, 2)
+        for hand in person.hand: 
+            hand.evaluate()
+            logCards = ''
+            for card in hand.cards:
+                logCards += str(card) + ', '
+            logCards += f'= {hand.value}'
+            log(__name__, logCards, 1, 3)
 
     def dealerPlay(self, person : Player):
 
@@ -150,8 +162,14 @@ class BlackJack:
 
             # take the first hand in the list as the active one
             activeHand = uncompletedHands[0]
+            activeHand.evaluate()
             
-            log(__name__, activeHand.cards, 1, 1)
+            logCards = ''
+            for card in activeHand.cards:
+                logCards += str(card) + ', '
+            logCards += f'= {activeHand.value}'
+
+            log(__name__, logCards, 1, 2)
             
             action = evaluateDealerStrategy(person.strategy, activeHand)
             
@@ -166,7 +184,15 @@ class BlackJack:
                                 if hand.completed == 0 
                                 ]
 
-        for hand in person.hand: log(__name__, hand.cards, 1, 1)
+        log(__name__, 'Dealer Result(s):', 1, 2)
+        for hand in person.hand: 
+            hand.evaluate()
+            logCards = ''
+            for card in hand.cards:
+                logCards += str(card) + ', '
+            logCards += f'= {hand.value}'
+            
+            log(__name__, logCards, 1, 3)
 
     def checkBJ(self, hand):
         hand.evaluate()
@@ -181,8 +207,11 @@ class BlackJack:
         # deal cards to player and dealer
         self.dealGame(forcedDealerHand = forcedDealerHand, forcedPlayerHand = forcedPlayerHand)
         
-        log(__name__, self.dealer.hand[0].cards, 1, 1)
-        log(__name__, self.player.hand[0].cards, 1, 1)
+        
+        log(__name__, f" Dealer: {str(self.dealer.hand[0].cards[0])}, - " , 1, 1)
+
+        self.player.hand[0].evaluate()
+        log(__name__, f" Player: {str(self.player.hand[0].cards[0])}, {str(self.player.hand[0].cards[1])} = {str(self.player.hand[0].value)}", 1, 1)
 
         # place the players bet on the current hand
         self.player.hand[0].placeBet(self.player,betSize)
@@ -191,7 +220,7 @@ class BlackJack:
         # Currently set to always peak
         self.checkBJ(self.dealer.hand[0])
         
-        # players turn
+        # players turn 
         log(__name__, 'Player:', 1, 1)
 
         # check for player bj
